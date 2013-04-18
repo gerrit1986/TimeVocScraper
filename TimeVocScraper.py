@@ -1,17 +1,17 @@
-# import section
+# imports
 from bs4 import BeautifulSoup # can be obtained from <http://www.crummy.com/software/BeautifulSoup/>
 import csv
 import urllib2
 
 # TimeVocScraper written by Gerrit Holz, 22.08.2012
 
-# connect to the website and read table's rows
+# connect to the website and read table's rows.
 raw = urllib2.urlopen('http://www.digicult-museen.net/xtree_2_vocnet/makeTableTimeVokDDB.php')
 raw = raw.read()
 soup = BeautifulSoup(raw)
 rows = soup.findAll("td")
 
-# fetch and trim the headings of the table
+# fetch and trim the headings of the table.
 head0 = str([rows[0]])
 head1 = str([rows[1]])
 head2 = str([rows[2]])
@@ -28,7 +28,7 @@ head4 = head4[8:-10]
 head5 = head5[8:-10]
 head6 = head6[8:-10]
 
-# define lists with starting elements which will be in the first line of csv
+# define lists with starting elements which will be in the first line of csv.
 ID = [head0]
 notation = [head1]
 earliestDate = [head2]
@@ -37,7 +37,7 @@ prefLabelatde = [head4]
 prefLabelaten = [head5]
 sortOrder = [head6]
 
-# setup indices for rows
+# define indices for rows.
 a = 7
 b = 8
 c = 9
@@ -46,7 +46,7 @@ e = 11
 f = 12
 g = 13
 
-# fetch data for first column and store it in list "ID"
+# fetch data for first column and store it in list "ID".
 try:
   for row in rows:
     untrimmed = rows[a]
@@ -55,9 +55,10 @@ try:
     ID.append(trimmed)
     a = a + 7
 except IndexError:
-  print "end of index for list 'ID'"
+  # print "end of index for list 'ID'"
+  pass
 
-# fetch data for second column and store it in list "notation"
+# fetch data for second column and store it in list "notation".
 try:
   for row in rows:
     untrimmed = rows[b]
@@ -66,9 +67,10 @@ try:
     notation.append(trimmed)
     b = b + 7
 except IndexError:
-  print "end of index for list 'notation'"
+  # print "end of index for list 'notation'"
+  pass
 
-# fetch data for third column and store it in list "earliestDate"
+# fetch data for third column and store it in list "earliestDate".
 try:
   for row in rows:
     untrimmed = rows[c]
@@ -77,9 +79,10 @@ try:
     earliestDate.append(trimmed)
     c = c + 7
 except IndexError:
-  print "end of index for list 'earliestDate'"
+  # print "end of index for list 'earliestDate'"
+  pass
   
-# fetch data for fourth column and store it in list "latestDate"
+# fetch data for fourth column and store it in list "latestDate".
 try:
   for row in rows:
     untrimmed = rows[d]
@@ -88,9 +91,10 @@ try:
     latestDate.append(trimmed)
     d = d + 7
 except IndexError:
-  print "end of index for list 'latestDate'"
+  # print "end of index for list 'latestDate'"
+  pass
   
-# fetch data for fifth column and store it in list "prefLabelatde"
+# fetch data for fifth column and store it in list "prefLabelatde".
 try:
   for row in rows:
     untrimmed = rows[e]
@@ -99,9 +103,10 @@ try:
     prefLabelatde.append(trimmed)
     e = e + 7
 except IndexError:
-  print "end of index for list 'prefLabelatde'"
+  # print "end of index for list 'prefLabelatde'"
+  pass
 
-# fetch data for sixth column and store it in list "prefLabelaten"
+# fetch data for sixth column and store it in list "prefLabelaten".
 try:
   for row in rows:
     untrimmed = rows[f]
@@ -110,9 +115,10 @@ try:
     prefLabelaten.append(trimmed)
     f = f + 7
 except IndexError:
-  print "end of index for list 'prefLabelaten'"
+  # print "end of index for list 'prefLabelaten'"
+  pass
   
-# fetch data for seventh column and store it in list "sortOrder"
+# fetch data for seventh column and store it in list "sortOrder".
 try:
   for row in rows:
     untrimmed = rows[g]
@@ -121,14 +127,18 @@ try:
     sortOrder.append(trimmed)
     g = g + 7
 except IndexError:
-  print "end of index for list 'sortOrder'"
-  
-data = zip(ID, notation, earliestDate, latestDate, prefLabelatde, prefLabelaten, sortOrder)
-print data
+  # print "end of index for list 'sortOrder'"
+  pass
 
-# open file and write tuple's content to it
+# zip all data.
+data = zip(ID, notation, earliestDate, latestDate, prefLabelatde, prefLabelaten, sortOrder)
+
+# open file and write tuple's content to it.
 with open('zeitfacetten.csv', "w") as zeitfacetten:
     csv.register_dialect("custom", delimiter=",", skipinitialspace=True)
     writer = csv.writer(zeitfacetten, dialect="custom")
     for tup in data:
         writer.writerow(tup)
+        
+# todo: check whether generating the file worked out. for now this is assumed.
+print "Succesfully extracted the table's content to 'zeitfacetten.csv'"
