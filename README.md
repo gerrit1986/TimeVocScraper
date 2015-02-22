@@ -1,5 +1,5 @@
 ## What does it do? ##
-This scraper fetches a time vocabulary from an html table.
+This scraper fetches a time vocabulary from an HTML table.
 
 
 ## How can I use it? ##
